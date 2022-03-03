@@ -25,7 +25,7 @@ class LoginController extends Controller
         
         if (Auth::attempt($credentials)) {
             Session::flash('success', 'username atau password bener');
-            return redirect()->route('login');
+            return redirect()->route('home');
         } else {
             //Login Fail
             Session::flash('error', 'username atau password salah');

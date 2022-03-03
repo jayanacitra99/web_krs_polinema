@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,11 @@ Route::post('/login', [LoginController::class, 'proslog'])->name('login_p');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    // Route::get('/', [AdminController::class, 'index'])->name('home');
-    // Route::get('/', [AdminController::class, 'index'])->name('home');
+    Route::get('/', [AdminController::class, 'index'])->name('home');
+
+    Route::get('jurusan', [AdminController::class, 'list_jurusan'])->name('jurusan');
+    Route::post('jurusan_add', [AdminController::class, 'add_jurusan'])->name('jurusan_add');
+    Route::post('jurusan_edit/{id}', [AdminController::class, 'edit_jurusan']);
 
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
