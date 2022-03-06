@@ -65,8 +65,8 @@ class AdminController extends Controller
             'prodi' => $request->prodi,
             'tingkat' => $request->tingkat,
         ]);
-        Session::flash('success', 'Data jurusan berhasil di tambahkan');
-        return redirect()->route('jurusan');
+        Session::flash('success', 'Data prodi berhasil di tambahkan');
+        return redirect()->route('prodi');
     }
 
     public function edit_prodi(Request $request, $id)
@@ -81,7 +81,7 @@ class AdminController extends Controller
             'prodi' => $request->prodi,
             'tingkat' => $request->tingkat,
         ]);
-        Session::flash('success', 'Data jurusan berhasil di perbarui');
+        Session::flash('success', 'Data prodi berhasil di perbarui');
         return redirect()->route('prodi');
     }
 
