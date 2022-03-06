@@ -25,7 +25,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('jurusan', [AdminController::class, 'list_jurusan'])->name('jurusan');
     Route::post('jurusan_add', [AdminController::class, 'add_jurusan'])->name('jurusan_add');
     Route::post('jurusan_edit/{id}', [AdminController::class, 'edit_jurusan']);
+    Route::get('jurusan_destroy/{id}', [AdminController::class, 'delet_jurusan']);
 
+    Route::get('prodi', [AdminController::class, 'list_prodi'])->name('prodi');
+    Route::post('prodi_add', [AdminController::class, 'add_prodi'])->name('prodi_add');
+    Route::post('prodi_edit/{id}', [AdminController::class, 'edit_prodi']);
+    Route::get('prodi_destroy/{id}', [AdminController::class, 'delet_prodi']);
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });

@@ -8,7 +8,7 @@
                 <div class="card-header pb-0">
 
                     <div class="d-flex">
-                        <h6>List Jurusan</h6>
+                        <h6>List Prodi</h6>
                         <a href="" class="btn btn-primary ms-auto justify-content-end me-5" data-bs-toggle="modal" data-bs-target='#addJurusan'>Tambah</a>
                     </div>
 
@@ -19,13 +19,15 @@
                             <thead>
                                 <tr>
                                     <th class="text-center text-secondary opacity-7">Jurusan</th>
+                                    <th class="text-center text-secondary opacity-7">Prodi</th>
+                                    <th class="text-center text-secondary opacity-7">Tingkat</th>
                                     <th class="text-secondary opacity-7 text-center">action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @if(!count($data))
                                 <tr>
-                                    <td colspan="2" class="align-middle text-center">
+                                    <td colspan="4" class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">Data masih kosong</span>
                                     </td>
                                 </tr>
@@ -35,8 +37,14 @@
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">{{ $d->nama_jurusan }}</span>
                                     </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ $d->prodi }}</span>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ $d->tingkat }}</span>
+                                    </td>
                                     <td class="align-middle text-center ">
-                                        <a href="#" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Edit jurusan" data-bs-toggle="modal" data-bs-target='#editJurusan{{ $d->id_lj }}'>
+                                        <a href="#" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Edit jurusan" data-bs-toggle="modal" data-bs-target='#editJurusan{{ $d->id_prodi }}'>
                                             Edit |
                                         </a>
                                         <a href="{{ url('jurusan') }}" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Delete jurusan">
@@ -72,12 +80,29 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" style="color: black;" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('jurusan_add') }}" method="post">
+                <form action="{{ route('prodi_add') }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" placeholder="Jurusan" aria-label="Jurusan" name="jurusan">
-                        @if ($errors->has('jurusan'))
-                        <span class="text-danger">{{ $errors->first('jurusan') }}</span>
+                        <!-- <input type="text" class="form-control form-control-lg" placeholder="Jurusan" aria-label="Jurusan" name="jurusan_id"> -->
+                        <select name="jurusan_id" id="jurusan_id" class="form-select">
+                            @foreach($jurusan as $j)
+                            <option value="{{ $j->id_lj }}">{{ $j->nama_jurusan }}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('jurusan_id'))
+                        <span class="text-danger">{{ $errors->first('jurusan_id') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Prodi" aria-label="Prodi" name="prodi">
+                        @if ($errors->has('prodi'))
+                        <span class="text-danger">{{ $errors->first('prodi') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Tingkat" aria-label="Tingkat" name="tingkat">
+                        @if ($errors->has('tingkat'))
+                        <span class="text-danger">{{ $errors->first('tingkat') }}</span>
                         @endif
                     </div>
                     <div class="text-center">
@@ -91,7 +116,7 @@
 
 <!-- Modal -->
 @foreach($data as $d)
-<div class="modal fade" id="editJurusan{{ $d->id_lj }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="editJurusan{{ $d->id_prodi }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -99,12 +124,29 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" style="color: black;" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('jurusan_edit', [$d->id_lj]) }}" method="post">
+                <form action="{{ url('prodi_edit', [$d->id_prodi]) }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" value="{{ $d->nama_jurusan }}" aria-label="Jurusan" name="jurusan">
-                        @if ($errors->has('jurusan'))
-                        <span class="text-danger">{{ $errors->first('jurusan') }}</span>
+                        <select name="jurusan_id" id="jurusan_id" class="form-select">
+                            @foreach($jurusan as $j)
+                            <option value="{{ $j->id_lj }}" <?php if ($j->id_lj == $d->jurusan_id) : echo "Selected";
+                                                            endif ?>>{{ $j->nama_jurusan }}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('jurusan_id'))
+                        <span class="text-danger">{{ $errors->first('jurusan_id') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" value="{{ $d->prodi }}" aria-label="Prodi" name="prodi">
+                        @if ($errors->has('prodi'))
+                        <span class="text-danger">{{ $errors->first('prodi') }}</span>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" value="{{ $d->tingkat }}" aria-label="Tingkat" name="tingkat">
+                        @if ($errors->has('tingkat'))
+                        <span class="text-danger">{{ $errors->first('tingkat') }}</span>
                         @endif
                     </div>
                     <div class="text-center">

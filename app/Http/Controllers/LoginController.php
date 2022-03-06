@@ -24,7 +24,7 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
         
         if (Auth::attempt($credentials)) {
-            Session::flash('success', 'username atau password bener');
+            Session::flash('success', 'Welcome to KRS Polinema!');
             return redirect()->route('home');
         } else {
             //Login Fail
