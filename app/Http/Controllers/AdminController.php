@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JurusanModel;
+use App\Models\MatkulModel;
 use App\Models\ProdiModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -27,16 +28,22 @@ class AdminController extends Controller
         JurusanModel::create([
             'nama_jurusan' => $request->jurusan,
         ]);
-        Session::flash('success', 'Data jurusan berhasil di tambahkan');
-        return redirect()->route('jurusan');
+        $toastr = array(
+            'message' => 'Data jurusan berhasil di tambahkan !',
+            'alert' => 'success'
+        );
+        return redirect()->route('jurusan')->with($toastr);
     }
 
     public function edit_jurusan(Request $request, $id)
     {
         $request->validate(['jurusan' => 'required']);
         JurusanModel::find($id)->update(['nama_jurusan' => $request->jurusan]);
-        Session::flash('success', 'Data jurusan berhasil di perbarui');
-        return redirect()->route('jurusan');
+        $toastr = array(
+            'message' => 'Data jurusan berhasil di perbarui !',
+            'alert' => 'success'
+        );
+        return redirect()->route('jurusan')->with($toastr);
     }
 
     public function delet_jurusan($id)
@@ -65,8 +72,8 @@ class AdminController extends Controller
             'prodi' => $request->prodi,
             'tingkat' => $request->tingkat,
         ]);
-        Session::flash('success', 'Data prodi berhasil di tambahkan');
-        return redirect()->route('prodi');
+        // Session::flash('success', 'Data prodi berhasil di tambahkan');
+        return redirect()->route('prodi')->with('success', 'Data Prodi Berhasil di tambahkan !');
     }
 
     public function edit_prodi(Request $request, $id)
@@ -81,8 +88,8 @@ class AdminController extends Controller
             'prodi' => $request->prodi,
             'tingkat' => $request->tingkat,
         ]);
-        Session::flash('success', 'Data prodi berhasil di perbarui');
-        return redirect()->route('prodi');
+        // Session::flash('success', 'Data prodi berhasil di perbarui');
+        return redirect()->route('prodi')->with('success', 'Data prodi berhasil di perbarui !');
     }
 
     public function delet_prodi($id)
@@ -90,5 +97,63 @@ class AdminController extends Controller
         //fungsi eloquent untuk menghapus data
         ProdiModel::find($id)->delete();
         return redirect()->route('prodi')->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function list_matkul()
+    {
+        $data = MatkulModel::join('list_prodi', 'list_matkul.prodi_id', '=', 'list_prodi.id_prodi')->join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->paginate(5);
+        $prodi = ProdiModel::join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->get();
+        return view('admin.list_matkul', compact('data', 'prodi'));
+    }
+
+    public function add_matkul(Request $request)
+    {
+        $request->validate([
+            'prodi_id' => 'required',
+            'matkul' => 'required',
+            'sks' => 'required',
+            'kuota' => 'required',
+            'tanggal_awal' => 'required',
+            'tanggal_akhir' => 'required',
+        ]);
+        MatkulModel::create([
+            'prodi_id' => $request->prodi_id,
+            'matkul' => $request->matkul,
+            'sks' => $request->sks,
+            'kuota' => $request->kuota,
+            'tanggal_awal' => $request->tanggal_awal,
+            'tanggal_akhir' => $request->tanggal_akhir,
+        ]);
+        // Session::flash('success', 'Data matkul berhasil di tambahkan');
+        return redirect()->route('matkul')->with('success', 'Data Matakuliah Berhasil Di tambahkan !');
+    }
+
+    public function edit_matkul(Request $request, $id)
+    {
+        $request->validate([
+            'prodi_id' => 'required',
+            'matkul' => 'required',
+            'sks' => 'required',
+            'kuota' => 'required',
+            'tanggal_awal' => 'required',
+            'tanggal_akhir' => 'required',
+        ]);
+        MatkulModel::find($id)->update([
+            'prodi_id' => $request->prodi_id,
+            'matkul' => $request->matkul,
+            'sks' => $request->sks,
+            'kuota' => $request->kuota,
+            'tanggal_awal' => $request->tanggal_awal,
+            'tanggal_akhir' => $request->tanggal_akhir,
+        ]);
+        // Session::flash('success', 'Data matkul berhasil di perbarui');
+        return redirect()->route('matkul')->with('success', 'Data Matakuliah Berhasil Di perbarui');
+    }
+
+    public function delet_matkul($id)
+    {
+        //fungsi eloquent untuk menghapus data
+        MatkulModel::find($id)->delete();
+        return redirect()->route('matkul')->with('success', 'Data Berhasil Dihapus');
     }
 }

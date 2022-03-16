@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/register', [LoginController::class, 'prosreg'])->name( 'register_p');
 Route::post('/login', [LoginController::class, 'proslog'])->name('login_p');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -31,6 +33,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('prodi_add', [AdminController::class, 'add_prodi'])->name('prodi_add');
     Route::post('prodi_edit/{id}', [AdminController::class, 'edit_prodi']);
     Route::get('prodi_destroy/{id}', [AdminController::class, 'delet_prodi']);
+
+    Route::get('matkul', [AdminController::class, 'list_matkul'])->name('matkul');
+    Route::post('matkul_add', [AdminController::class, 'add_matkul'])->name('matkul_add');
+    Route::post('matkul_edit/{id}', [AdminController::class, 'edit_matkul']);
+    Route::get('matkul_destroy/{id}', [AdminController::class, 'delet_matkul']);
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });
