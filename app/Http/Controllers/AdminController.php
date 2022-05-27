@@ -6,6 +6,9 @@ use App\Models\JurusanModel;
 use App\Models\MatkulModel;
 use App\Models\ProdiModel;
 use Illuminate\Http\Request;
+use App\Imports\DatasetImport;
+use Excel;
+use App\Models\DatasetModel;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -101,7 +104,7 @@ class AdminController extends Controller
 
     public function list_matkul()
     {
-        $data = MatkulModel::join('list_prodi', 'list_matkul.prodi_id', '=', 'list_prodi.id_prodi')->join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->paginate(5);
+        $data = MatkulModel::join('list_prodi', 'list_matkul.id_prodi', '=', 'list_prodi.id_prodi')->join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->paginate(5);
         $prodi = ProdiModel::join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->get();
         return view('admin.list_matkul', compact('data', 'prodi'));
     }
@@ -113,16 +116,16 @@ class AdminController extends Controller
             'matkul' => 'required',
             'sks' => 'required',
             'kuota' => 'required',
-            'tanggal_awal' => 'required',
-            'tanggal_akhir' => 'required',
+            'tahun_awal' => 'required',
+            'tahun_akhir' => 'required',
         ]);
         MatkulModel::create([
-            'prodi_id' => $request->prodi_id,
+            'id_prodi' => $request->prodi_id,
             'matkul' => $request->matkul,
             'sks' => $request->sks,
             'kuota' => $request->kuota,
-            'tanggal_awal' => $request->tanggal_awal,
-            'tanggal_akhir' => $request->tanggal_akhir,
+            'tahun_awal' => $request->tahun_awal,
+            'tahun_akhir' => $request->tahun_akhir,
         ]);
         // Session::flash('success', 'Data matkul berhasil di tambahkan');
         return redirect()->route('matkul')->with('success', 'Data Matakuliah Berhasil Di tambahkan !');
@@ -135,16 +138,16 @@ class AdminController extends Controller
             'matkul' => 'required',
             'sks' => 'required',
             'kuota' => 'required',
-            'tanggal_awal' => 'required',
-            'tanggal_akhir' => 'required',
+            'tahun_awal' => 'required',
+            'tahun_akhir' => 'required',
         ]);
         MatkulModel::find($id)->update([
-            'prodi_id' => $request->prodi_id,
+            'id_prodi' => $request->prodi_id,
             'matkul' => $request->matkul,
             'sks' => $request->sks,
             'kuota' => $request->kuota,
-            'tanggal_awal' => $request->tanggal_awal,
-            'tanggal_akhir' => $request->tanggal_akhir,
+            'tahun_awal' => $request->tahun_awal,
+            'tahun_akhir' => $request->tahun_akhir,
         ]);
         // Session::flash('success', 'Data matkul berhasil di perbarui');
         return redirect()->route('matkul')->with('success', 'Data Matakuliah Berhasil Di perbarui');
@@ -155,5 +158,19 @@ class AdminController extends Controller
         //fungsi eloquent untuk menghapus data
         MatkulModel::find($id)->delete();
         return redirect()->route('matkul')->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function importDataset(Request $request){
+        if(DatasetModel::exists()){
+            DatasetModel::truncate();
+            Excel::import(new DatasetImport,Request()->file);
+        } else {
+            Excel::import(new DatasetImport,Request()->file);
+        }
+        $toastr = array(
+            'message' => 'Upload Success!',
+            'alert' => 'success'
+        );
+        return redirect()->back()->with($toastr);
     }
 }

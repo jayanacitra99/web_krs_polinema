@@ -8,8 +8,10 @@
 
                     <div class="d-flex">
                         <h6>List Matakuliah</h6>
+                        @if (Auth::user()->role != 3)
                         <a href="" class="btn btn-primary ms-auto justify-content-end me-5" data-bs-toggle="modal"
                             data-bs-target='#addJurusan'>Tambah</a>
+                        @endif
                     </div>
 
                 </div>
@@ -24,7 +26,9 @@
                                     <th class="text-center text-secondary opacity-7">SKS</th>
                                     <th class="text-center text-secondary opacity-7">Kuota</th>
                                     <th class="text-center text-secondary opacity-7">Tahun Ajaran</th>
+                                    @if (Auth::user()->role != 3)
                                     <th class="text-secondary opacity-7 text-center">action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,18 +62,20 @@
                                         <span class="text-secondary text-xs font-weight-bold">{{ $awal->format('Y') }} /
                                             {{ $akhir->format('Y') }} </span>
                                     </td>
+                                    @if (Auth::user()->role != 3)
                                     <td class="align-middle text-center ">
                                         <a href="#" class="text-secondary font-weight-bold text-xm openModal"
-                                            data-original-title="Edit jurusan" data-bs-toggle="modal"
-                                            data-bs-target='#editJurusan{{ $d->id_mk }}'>
+                                            data-original-title="Edit Matkul" data-bs-toggle="modal"
+                                            data-bs-target='#editMatkul{{ $d->id_mk }}'>
                                             Edit |
                                         </a>
-                                        <a href="{{ url('jurusan') }}"
+                                        <a href="{{ url('matkul_destroy/'.$d->id_mk) }}"
                                             class="text-secondary font-weight-bold text-xm openModal"
-                                            data-original-title="Delete jurusan">
+                                            data-original-title="Delete Matkul">
                                             Delete
                                         </a>
                                     </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                                 @endif
@@ -101,7 +107,7 @@
                     aria-label="Close">X</button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('jurusan_add') }}" method="post">
+                <form action="{{ route('matkul_add') }}" method="post">
                     @csrf
                     <div class="mb-3">
                         <input type="text" class="form-control" list="prodi" name="prodi_id">
@@ -158,7 +164,7 @@
 
 <!-- Modal -->
 @foreach($data as $d)
-<div class="modal fade" id="editJurusan{{ $d->id_mk }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="editMatkul{{ $d->id_mk }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -168,11 +174,11 @@
                     aria-label="Close">X</button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('jurusan_edit', [$d->id_mk]) }}" method="post">
+                <form action="{{ url('matkul_edit', [$d->id_mk]) }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <input type="text" class="form-control" list="prodi">
-                        <datalist id="pordi">
+                        <input type="text" class="form-control" list="prodi" name="prodi_id">
+                        <datalist id="prodi">
                             @foreach($prodi as $p)
                             <option value="{{ $p->id_prodi }}" <?php if ($p->id_prodi == $d->prodi_id) : echo
                                 "Selected";

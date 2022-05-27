@@ -19,6 +19,7 @@
     <link href="{{ asset('css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('css/argon-dashboard.css?v=2.0.0') }}" rel="stylesheet" />
+    <link href="{{ asset('css/toastr.css') }}" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -99,7 +100,7 @@
                                         </div>
 
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign Up</button>
                                         </div>
                                     </form>
                                 </div>
@@ -138,6 +139,21 @@
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.0') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ asset('js/toastr.js') }}"></script>
+    <script>
+        @if(Session::has('message'))
+        var type = "{{ Session::get('alert', 'info') }}";
+        switch (type) {
+            case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
+
+            case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
+        }
+        @endif
+    </script>
 </body>
 
 </html>
