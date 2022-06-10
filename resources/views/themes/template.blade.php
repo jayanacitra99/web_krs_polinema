@@ -22,6 +22,12 @@
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet" />
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- DataTables -->
+  <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     @yield('css')
 </head>
 
@@ -68,6 +74,15 @@
                             <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">List Prodi</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ route('listKRS') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">List KRS</span>
                     </a>
                 </li>
                 @endif
@@ -186,6 +201,21 @@
     <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.0') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
+    <!-- SweetAlert2 -->
+  <script src="{{asset('')}}adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{asset('')}}adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/jszip/jszip.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="{{asset('')}}adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script>
         @if(Session::has('message'))
         var type = "{{ Session::get('alert', 'info') }}";

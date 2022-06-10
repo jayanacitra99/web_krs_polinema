@@ -40,6 +40,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('matkul_edit/{id}', [AdminController::class, 'edit_matkul']);
     Route::get('matkul_destroy/{id}', [AdminController::class, 'delet_matkul']);
 
+    Route::get('listKRS', [AdminController::class, 'listKRS'])->name('listKRS');
+    Route::get('actionKRS/{idKRS}/{status}', [AdminController::class, 'actionKRS'])->name('actionKRS');
+
     Route::post('importDataset', [AdminController::class, 'importDataset']);
 
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

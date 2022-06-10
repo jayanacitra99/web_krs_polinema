@@ -20,7 +20,6 @@
                                 <tr>
                                     <th class="text-center text-secondary opacity-7">Jurusan</th>
                                     <th class="text-center text-secondary opacity-7">Prodi</th>
-                                    <th class="text-center text-secondary opacity-7">Tingkat</th>
                                     <th class="text-secondary opacity-7 text-center">action</th>
                                 </tr>
                             </thead>
@@ -39,9 +38,6 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">{{ $d->prodi }}</span>
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <span class="text-secondary text-xs font-weight-bold">{{ $d->tingkat }}</span>
                                     </td>
                                     <td class="align-middle text-center ">
                                         <a href="#" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Edit jurusan" data-bs-toggle="modal" data-bs-target='#editJurusan{{ $d->id_prodi }}'>
@@ -99,12 +95,6 @@
                         <span class="text-danger">{{ $errors->first('prodi') }}</span>
                         @endif
                     </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" placeholder="Tingkat" aria-label="Tingkat" name="tingkat">
-                        @if ($errors->has('tingkat'))
-                        <span class="text-danger">{{ $errors->first('tingkat') }}</span>
-                        @endif
-                    </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Submit</button>
                     </div>
@@ -141,12 +131,6 @@
                         <input type="text" class="form-control form-control-lg" value="{{ $d->prodi }}" aria-label="Prodi" name="prodi">
                         @if ($errors->has('prodi'))
                         <span class="text-danger">{{ $errors->first('prodi') }}</span>
-                        @endif
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" value="{{ $d->tingkat }}" aria-label="Tingkat" name="tingkat">
-                        @if ($errors->has('tingkat'))
-                        <span class="text-danger">{{ $errors->first('tingkat') }}</span>
                         @endif
                     </div>
                     <div class="text-center">

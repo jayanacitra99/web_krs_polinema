@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Imports\DatasetImport;
 use Excel;
 use App\Models\DatasetModel;
+use App\Models\KrsModel;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -169,6 +170,28 @@ class AdminController extends Controller
         }
         $toastr = array(
             'message' => 'Upload Success!',
+            'alert' => 'success'
+        );
+        return redirect()->back()->with($toastr);
+    }
+
+    public function listKRS(){
+        $data = [
+            'krs' => KrsModel::join('users','users.id','=','krs.id_user')->get(),
+            'matkul' => MatkulModel::get(),
+        ];
+        return view('admin/krsStatus',$data);
+    }
+    public function actionKRS($id,$status){
+        $data = [
+            'status' => $status,
+        ];
+        KrsModel::where('id_krs',$id)->update($data);
+        // KrsModel::find($id)->update([
+        //     'status' => 'APPROVED'
+        // ]);
+        $toastr = array(
+            'message' => 'Success!',
             'alert' => 'success'
         );
         return redirect()->back()->with($toastr);

@@ -11,10 +11,11 @@ class KrsModel extends Model
 
     protected $table = 'krs';
     public $timestamps = false;
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_krs';
 
     protected $fillable = [
         'id_user',
-        'matkul'
+        'matkul',
+        'status'
     ];
 }

@@ -4,27 +4,34 @@
 <?php $submitted = false?>
 @foreach ($krs as $it)
     @if ($it->id_user == Auth::user()->id)
-        <?php $submitted = true?>
+    <?php 
+        $submitted = true;
+        $status = $it->status;
+    ?>
     @endif
 @endforeach
 @if (!$submitted)
 <form action="{{url('submitkrs')}}" method="POST">
     @csrf
     <div class="container-fluid py-4">
-        <div class="row mt-4">
+        <div class="row mt-4" >
             <div class="col-lg-7 mb-lg-0 mb-4">
               <div class="card ">
+                <select name="" id="selectJurusan" class="form-control text-center">
+                    <option value="" disabled selected> -- Pilih Jurusan yang Diinginkan -- </option>
+                    @foreach ($jurusan as $item)
+                        <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
+                    @endforeach
+                </select>
                 <div class="card-header pb-0 p-3">
                   <div class="d-flex justify-content-between">
                     <h6 class="mb-2">List Mata Kuliah</h6>
                   </div>
                 </div>
-                <div class="table-responsive">
-                  <table id="listMK" class="table table-hover">
+                <div class="table-responsive p-3 max-height-vh-60">
+                  <table id="listMK" class="table table-hover" style="display: none">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -55,7 +62,7 @@
                                     @endforeach
                                 @endif
                             @endforeach
-                        <tr for="">
+                        <tr for="" class="jurusan{{$d->jurusan_id}} allMK" style="display: none">
                             <td class="w-30">
                                 <div class="d-flex px-2 py-1 align-items-center">
                                 <div>
@@ -63,14 +70,6 @@
                                     matkul="{{$d->matkul}}" jurusan="{{$d->nama_jurusan}}"
                                     prodi="{{$d->prodi}}" sks="{{$d->sks}}" rekom="{{$rekom}}">
                                 </div>
-                                  <div class="ms-4">
-                                    <p class="text-xs font-weight-bold mb-0">Jurusan:</p>
-                                    <h6 class="text-sm mb-0">{{$d->nama_jurusan}}</h6>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="w-30">
-                                <div class="d-flex px-2 py-1 align-items-center">
                                   <div class="ms-4">
                                     <p class="text-xs font-weight-bold mb-0">Prodi:</p>
                                     <h6 class="text-sm mb-0">{{$d->prodi}}</h6>
@@ -101,16 +100,6 @@
                                   </div>
                                 </div>
                             </td>
-                            <td class="w-30">
-                                <div class="d-flex px-2 py-1 align-items-center">
-                                  <div class="ms-4">
-                                    <p class="text-xs font-weight-bold mb-0">Periode:</p>
-                                    <?php $awal =  new DateTime($d->tahun_awal); $akhir = new DateTime($d->tahun_akhir);  ?>
-                                    <h6 class="text-sm mb-0">{{ $awal->format('Y') }} /
-                                        {{ $akhir->format('Y') }}</h6>
-                                  </div>
-                                </div>
-                            </td>
                         </tr>
                         @endforeach
                         @endif
@@ -135,76 +124,87 @@
     </div>
 </form>
 @else
-<div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-12">
-        <div class="card mb-4">
-          <div class="card-header pb-0">
-            <h6>Submitted KRS</h6>
-          </div>
-          <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0">
-              <table id="resultKRS" userkrs="{{Auth::user()->username}}" class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mata Kuliah</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Program Studi</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jurusan</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SKS</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    @foreach ($krs as $show)
-                        @if ($show->id_user == Auth::user()->id)
-                            @foreach (unserialize($show->matkul) as $mk)
-                                @foreach ($data as $daa)
-                                    @if ($daa->id_mk == $mk)
-                                        <tr>
-                                            <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">{{$daa->matkul}}</h6>
-                                                </div>
-                                            </div>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">{{$daa->prodi}}</p>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">{{$daa->nama_jurusan}}</p>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">{{$daa->sks}}</p>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        @endif
-                    @endforeach
-                </tbody>
-              </table>
+  @if ($status == 'WAITING')
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Submitted KRS</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2 text-md-center">
+              <h2>WAITING FOR APRROVAL</h2>
             </div>
           </div>
         </div>
       </div>
     </div>
-</div>
+  @else
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6>Submitted KRS</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-3">
+                <table id="resultKRS" userkrs="{{Auth::user()->username}}" class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mata Kuliah</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Program Studi</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Jurusan</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SKS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      @foreach ($krs as $show)
+                          @if ($show->id_user == Auth::user()->id)
+                              @foreach (unserialize($show->matkul) as $mk)
+                                  @foreach ($data as $daa)
+                                      @if ($daa->id_mk == $mk)
+                                          <tr>
+                                              <td>
+                                              <div class="d-flex px-2 py-1">
+                                                  <div class="d-flex flex-column justify-content-center">
+                                                      <h6 class="mb-0 text-sm">{{$daa->matkul}}</h6>
+                                                  </div>
+                                              </div>
+                                              </td>
+                                              <td>
+                                                  <p class="text-xs font-weight-bold mb-0">{{$daa->prodi}}</p>
+                                              </td>
+                                              <td>
+                                                  <p class="text-xs font-weight-bold mb-0">{{$daa->nama_jurusan}}</p>
+                                              </td>
+                                              <td>
+                                                  <p class="text-xs font-weight-bold mb-0">{{$daa->sks}}</p>
+                                              </td>
+                                          </tr>
+                                      @endif
+                                  @endforeach
+                              @endforeach
+                          @endif
+                      @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
 @endif
 @endsection
 @section('css')
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"></script>
-    <script src="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"></script> --}}
-    <script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"></script>
-    
-
     <script type="text/javascript">
         var check = 0;
         $(document).ready(function() {
             $('input[type=checkbox][class=checkmk]').change(function() {
                 if ($(this).is(':checked')) {
-                    var li = '<li id="list'+$(this).val()+'" class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">'+
+                    var li = '<li id="list'+$(this).val()+'" class="list-group-item border-0 d-flex selectedMK justify-content-between ps-0 mb-2 border-radius-lg">'+
                                 '<div class="d-flex align-items-center">'+
                                     '<div class="icon col-1 icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">'+
                                     '<i class="ni ni-mobile-button text-white opacity-10"></i>'+
@@ -232,34 +232,31 @@
             });
         });
         $(document).ready(function () {
+          $('#selectJurusan').on('change', function() {
+            $("#listMK").css("display", "block");
+            $('.selectedMK').remove();
+            $('#submitButton').hide();
+            $('.checkmk').prop('checked',false);
+            $('.allMK').hide();
+            var jurusan = $('#selectJurusan').val();
+            $('.jurusan'+jurusan).show();
+          });
+        });
+
+        $(document).ready(function () {
             $('#listMK').DataTable({
-                lengthChange : false,
-                pageLength : 5,
-                info : false,
-                dom: 'Bfrtip',
-                buttons: ['pdf']
-            });
+              "responsive": true, "lengthChange": false, "autoWidth": false, "ordering": false, "pageLength":5, "paging":false,"info" : false,
+            }).buttons().container().appendTo('#listMK_wrapper .col-md-6:eq(0)');
 
             $('#resultKRS').DataTable({
-                paging : false,
-                info : false,
-                searching : false,
-                dom: 'Bfrtip',
-                buttons: [{
-                    extend: "pdfHtml5",
+              "responsive": true, "lengthChange": false, "autoWidth": false, "searching":false, "info" : false,
+              "buttons": [{
+                    extend: "pdf",
                     messageTop: "Nama : "+$('#resultKRS').attr('userkrs'),
                 }]
-            });
+            }).buttons().container().appendTo('#resultKRS_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection
 @section('js')
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
 @endsection

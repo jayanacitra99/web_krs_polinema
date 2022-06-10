@@ -25,7 +25,6 @@
                                     <th class="text-center text-secondary opacity-7">Matakuliah</th>
                                     <th class="text-center text-secondary opacity-7">SKS</th>
                                     <th class="text-center text-secondary opacity-7">Kuota</th>
-                                    <th class="text-center text-secondary opacity-7">Tahun Ajaran</th>
                                     @if (Auth::user()->role != 3)
                                     <th class="text-secondary opacity-7 text-center">action</th>
                                     @endif
@@ -56,11 +55,6 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">{{ $d->kuota }}</span>
-                                    </td>
-                                    <td class="align-middle text-center">
-                                        <?php $awal =  new DateTime($d->tahun_awal); $akhir = new DateTime($d->tahun_akhir);  ?>
-                                        <span class="text-secondary text-xs font-weight-bold">{{ $awal->format('Y') }} /
-                                            {{ $akhir->format('Y') }} </span>
                                     </td>
                                     @if (Auth::user()->role != 3)
                                     <td class="align-middle text-center ">
@@ -142,17 +136,6 @@
                         <span class="text-danger">{{ $errors->first('kuota') }}</span>
                         @endif
                     </div>
-                    <div class="mb-3">
-                        <label for="">Tahun Awal</label>
-                        <input type="date" class="form-control form-control-md" id="datep1" aria-label="Tahun Ajaran"
-                            name="tahun_awal">
-                        <label for="">Tahun Akhir</label>
-                        <input type="date" class="form-control form-control-md" id="datep2" aria-label="Tahun Ajaran"
-                            name="tahun_akhir">
-                        @if ($errors->has('tahun_ajaran') || $errors->has('tahun_ajaran2'))
-                        <span class="text-danger">{{ $errors->first('tahun_ajaran') }}</span>
-                        @endif
-                    </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Submit</button>
                     </div>
@@ -210,15 +193,6 @@
                             aria-label="Kuota" name="kuota">
                         @if ($errors->has('kuota'))
                         <span class="text-danger">{{ $errors->first('kuota') }}</span>
-                        @endif
-                    </div>
-                    <div class="mb-3">
-                        <input type="date" class="form-control form-control-lg" id="datep1" aria-label="Tahun Ajaran"
-                            name="tahun_awal" value="{{ $d->tahun_awal }}"> /
-                        <input type="date" class="form-control form-control-lg" id="datep2" aria-label="Tahun Ajaran"
-                            name="tahun_akhir" value="{{ $d->tahun_akhir }}">
-                        @if ( $errors->has('tahun_ajaran') || $errors->has('tahun_ajaran2') )
-                        <span class="text-danger">{{ $errors->first('tahun_ajaran') }}</span>
                         @endif
                     </div>
                     <div class="text-center">
