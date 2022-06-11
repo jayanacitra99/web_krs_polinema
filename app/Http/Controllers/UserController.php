@@ -15,9 +15,9 @@ class UserController extends Controller
     //
     public function krs(){
         $krs = KrsModel::all();
-        $data = MatkulModel::orderBy('id_mk','ASC')->join('list_prodi', 'list_matkul.id_prodi', '=', 'list_prodi.id_prodi')->join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->get();
+        $data = MatkulModel::orderBy('cluster','DESC')->join('list_prodi', 'list_matkul.id_prodi', '=', 'list_prodi.id_prodi')->join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->join('dataset','dataset.id_mk','=','list_matkul.id_mk')->get();
         $prodi = ProdiModel::join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->get();
-        $dataset = DatasetModel::all();
+        $dataset = DatasetModel::orderBy('cluster','DESC')->get();
         $jurusan = JurusanModel::get();
         return view('krs', compact('data', 'prodi', 'dataset', 'krs', 'jurusan'));
     }

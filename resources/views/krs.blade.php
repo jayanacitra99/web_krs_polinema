@@ -17,18 +17,24 @@
         <div class="row mt-4" >
             <div class="col-lg-7 mb-lg-0 mb-4">
               <div class="card ">
-                <select name="" id="selectJurusan" class="form-control text-center">
-                    <option value="" disabled selected> -- Pilih Jurusan yang Diinginkan -- </option>
+                <select name="" id="selectJurusan" class="form-control text-center border-2 border-primary">
+                    <option value="" disabled selected> -- Pilih Jurusan yang Diinginkan --  </option>
                     @foreach ($jurusan as $item)
                         <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
                     @endforeach
                 </select>
                 <div class="card-header pb-0 p-3">
+                  <h6 class="mb-2">List Mata Kuliah</h6>
                   <div class="d-flex justify-content-between">
-                    <h6 class="mb-2">List Mata Kuliah</h6>
+                    <p class="font-weight-light">Sangat Direkomendasikan</p>
+                    <div class="btn btn-sm btn-success">4</div>
+                    <div class="btn btn-sm btn-info">3</div>
+                    <div class="btn btn-sm btn-warning">2</div>
+                    <div class="btn btn-sm btn-danger">1</div>
+                    <p class="font-weight-light">Kurang Direkomendasikan</p>
                   </div>
                 </div>
-                <div class="table-responsive p-3 max-height-vh-60">
+                <div class="table-responsive p-3 max-height-vh-50">
                   <table id="listMK" class="table table-hover" style="display: none">
                         <thead>
                             <tr>
@@ -47,28 +53,22 @@
                         </tr>
                         @else
                         @foreach($data as $d)
-                        <?php $rekom = ": "?>
-                            @foreach ($dataset as $sat)
-                                @if ($d->id_mk == $sat->id_mk)
-                                    <?php $cluster = $sat->cluster?>
-                                    @foreach ($dataset as $set)
-                                        @if (($set->cluster == $cluster) && ($d->id_mk != $set->id_mk))
-                                            @foreach ($data as $dd)
-                                                @if ($set->id_mk == $dd->id_mk)
-                                                    <?php $rekom = $rekom . $dd->matkul . ', '?>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                @endif
-                            @endforeach
-                        <tr for="" class="jurusan{{$d->jurusan_id}} allMK" style="display: none">
+                        @if ($d->cluster == 4)
+                          <?php $cluster="btn-success"?>
+                        @elseif ($d->cluster == 3)
+                          <?php $cluster="btn-info"?>
+                        @elseif ($d->cluster == 2)
+                          <?php $cluster="btn-warning"?>
+                        @else
+                          <?php $cluster="btn-danger"?>
+                        @endif
+                        <tr for="" class="jurusan{{$d->jurusan_id}} allMK {{$cluster}}" style="display: none">
                             <td class="w-30">
                                 <div class="d-flex px-2 py-1 align-items-center">
                                 <div>
                                     <input type="checkbox" class="checkmk" name="mk[]" value="{{$d->id_mk}}" 
                                     matkul="{{$d->matkul}}" jurusan="{{$d->nama_jurusan}}"
-                                    prodi="{{$d->prodi}}" sks="{{$d->sks}}" rekom="{{$rekom}}">
+                                    prodi="{{$d->prodi}}" sks="{{$d->sks}}">
                                 </div>
                                   <div class="ms-4">
                                     <p class="text-xs font-weight-bold mb-0">Prodi:</p>
@@ -212,7 +212,6 @@
                                     '<div class="d-flex flex-column">'+
                                     '<h6 class="mb-1 text-dark text-sm">'+$(this).attr("matkul")+'</h6>'+
                                     '<span class="text-xs">'+$(this).attr("jurusan")+' ('+$(this).attr("prodi")+'), <span class="font-weight-bold">'+$(this).attr("sks")+' SKS</span></span>'+
-                                    '<span class="text-xs">Rekomendasi :  <span class="font-weight-bold">'+$(this).attr("rekom")+'</span></span>'+
                                     '</div>'+
                                 '</div>'+
                             '</li>';

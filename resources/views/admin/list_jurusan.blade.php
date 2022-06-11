@@ -39,7 +39,7 @@
                                         <a href="#" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Edit jurusan" data-bs-toggle="modal" data-bs-target='#editJurusan{{ $d->id_lj }}'>
                                             Edit |
                                         </a>
-                                        <a href="{{ url('jurusan') }}" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Delete jurusan">
+                                        <a href="{{ url('jurusan_destroy/'.$d->id_lj) }}" class="text-secondary font-weight-bold text-xm openModal" data-original-title="Delete jurusan">
                                             Delete
                                         </a>
                                     </td>
