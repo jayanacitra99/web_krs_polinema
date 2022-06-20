@@ -30,10 +30,29 @@
   <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="{{asset('')}}adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <script type="text/javascript">
+    function clickNotif(){
+      document.getElementById('notifSwal').click();
+    }
+  </script>
+  <style>
+    .sidenav {
+      z-index: 1040; !important
+    }
+  </style>
     @yield('css')
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
+    @if(session('success'))
+		<div class="alert alert-success" id="notif" swalType="success" swalTitle="{{session('success')}}" style="display: none">{{session('success')}}</div>
+		<script>window.addEventListener("load",clickNotif);</script>	
+	@endif
+	@if(session('notif'))
+		<div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{session('notif')}}" style="display: none">{{session('notif')}}</div>
+		<script>window.addEventListener("load",clickNotif);</script>	
+	@endif
+  <button type="button" id="notifSwal" class="btn btn-success notifSwal" style="display: none"></button>
     <div class="min-height-300 bg-primary position-absolute w-100"></div>
     <aside
         class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
@@ -112,7 +131,7 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account pages</h6>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="javascript:void(0)">
+                    <a class="nav-link " href="{{route('profile')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
@@ -231,6 +250,15 @@
                 break;
         }
         @endif
+
+        $('.notifSwal').click(function() {
+          Swal.fire({
+              icon: $('#notif').attr('swalType'),
+              title: $('#notif').attr('swalTitle'),
+              showConfirmButton: true,
+              timer: 5000
+          })
+      });
     </script>
     @yield('js')
 </body>

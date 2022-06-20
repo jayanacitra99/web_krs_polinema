@@ -10,9 +10,8 @@ class MatkulModel extends Model
     use HasFactory;
     protected $table = 'list_matkul';
     public $timestamps = false;
-    protected $primaryKey = 'id_mk';
 
     protected $fillable = [
-        'id_prodi', 'matkul', 'sks', 'kuota', 'tahun_awal', 'tahun_akhir'
+        'id_mk','id_prodi', 'matkul', 'sks', 'kuota'
     ];
 }

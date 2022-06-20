@@ -174,7 +174,36 @@
         <div class="modal-body">
           <form action="{{url('importDataset')}}" method="POST" enctype="multipart/form-data">
           @csrf
-            <input type="file" name="file" id="file" accept=".csv,.xlsx">
+          <div class="mb-3">
+            <select name="asal" id="" class="form-control form-control-lg">
+                <option disabled selected>-- PILIH ASAL JURUSAN -- </option>
+                @foreach ($jurusan as $item)
+                    <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
+                @endforeach
+            </select>
+          </div>
+            
+        @error('asal')
+          <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+          <script> window.addEventListener("load",clickNotif);</script>
+        @enderror
+        <div class="mb-3">
+            <select name="tujuan" id="" class="form-control form-control-lg">
+                <option disabled selected>-- PILIH TUJUAN JURUSAN -- </option>
+                @foreach ($jurusan as $item)
+                    <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
+                @endforeach
+            </select>
+        </div>
+        @error('tujuan')
+            <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+            <script> window.addEventListener("load",clickNotif);</script>
+        @enderror
+            <input type="file" name="file" class="form-control form-control-lg" id="file" accept=".csv,.xlsx">
+        @error('file')
+            <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+            <script> window.addEventListener("load",clickNotif);</script>
+        @enderror
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

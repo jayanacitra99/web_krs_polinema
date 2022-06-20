@@ -50,4 +50,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/krs', [UserController::class, 'krs'])->name('krs');
     Route::post('/submitkrs', [UserController::class, 'submitKrs'])->name('submitkrs');
+
+    Route::get('/profile', [LoginController::class, 'profile'])->name('profile');
+    Route::post('/editProfile/{id}', [LoginController::class, 'editProfile'])->name('editProfile');
+    Route::post('/changePass/{id}', [LoginController::class, 'changePass'])->name('changePass');
 });

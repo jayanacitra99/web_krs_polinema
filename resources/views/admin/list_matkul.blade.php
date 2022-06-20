@@ -20,6 +20,7 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
+                                    <th class="text-center text-secondary opacity-7">Kode Matkul</th>
                                     <th class="text-center text-secondary opacity-7">Jurusan</th>
                                     <th class="text-center text-secondary opacity-7">Prodi</th>
                                     <th class="text-center text-secondary opacity-7">Matakuliah</th>
@@ -40,6 +41,10 @@
                                 @else
                                 @foreach($data as $d)
                                 <tr>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">{{ $d->id_mk
+                                            }}</span>
+                                    </td>
                                     <td class="align-middle text-center">
                                         <span class="text-secondary text-xs font-weight-bold">{{ $d->nama_jurusan
                                             }}</span>
@@ -111,30 +116,42 @@
                             @endforeach
                         </datalist>
                        
-                        @if ($errors->has('prodi_id'))
-                        <span class="text-danger">{{ $errors->first('prodi_id') }}</span>
-                        @endif
+                    @error('prodi_id')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" placeholder="Kode Matkul" aria-label="Kode Matkul"
+                            name="id_mk">
+                    @error('id_mk')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="mb-3">
                         <input type="text" class="form-control form-control-lg" placeholder="Matkul" aria-label="Matkul"
                             name="matkul">
-                        @if ($errors->has('matkul'))
-                        <span class="text-danger">{{ $errors->first('matkul') }}</span>
-                        @endif
+                    @error('matkul')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" placeholder="SKS" aria-label="SKS"
+                        <input type="number" class="form-control form-control-lg" placeholder="SKS" aria-label="SKS"
                             name="sks">
-                        @if ($errors->has('sks'))
-                        <span class="text-danger">{{ $errors->first('sks') }}</span>
-                        @endif
+                    @error('sks')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" placeholder="180" aria-label="Kuota"
+                        <input type="number" class="form-control form-control-lg" placeholder="180" aria-label="Kuota"
                             name="kuota">
-                        @if ($errors->has('kuota'))
-                        <span class="text-danger">{{ $errors->first('kuota') }}</span>
-                        @endif
+                    @error('kuota')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Submit</button>
@@ -160,40 +177,51 @@
                 <form action="{{ url('matkul_edit', [$d->id_mk]) }}" method="post">
                     @csrf
                     <div class="mb-3">
-                        <input type="text" class="form-control" list="prodi" name="prodi_id">
-                        <datalist id="prodi">
+                        <select name="prodi_id" id="" class="form-control">
                             @foreach($prodi as $p)
                             <option value="{{ $p->id_prodi }}" <?php if ($p->id_prodi == $d->prodi_id) : echo
-                                "Selected";
+                                "selected";
                                 endif; ?>>
                                 {{ $p->nama_jurusan }} || {{ $p->prodi }}
                             </option>
                             @endforeach
-                        </datalist>
-                        @if ($errors->has('prodi_id'))
-                        <span class="text-danger">{{ $errors->first('prodi_id') }}</span>
-                        @endif
+                        </select>
+                    @error('prodi_id')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-lg" value="{{ $d->id_mk }}"
+                            aria-label="IdMK" name="id_mk">
+                    @error('id_mk')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="mb-3">
                         <input type="text" class="form-control form-control-lg" value="{{ $d->matkul }}"
                             aria-label="Matkul" name="matkul">
-                        @if ($errors->has('matkul'))
-                        <span class="text-danger">{{ $errors->first('matkul') }}</span>
-                        @endif
+                    @error('matkul')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" value="{{ $d->sks }}" aria-label="SKS"
+                        <input type="number" class="form-control form-control-lg" value="{{ $d->sks }}" aria-label="SKS"
                             name="sks">
-                        @if ($errors->has('sks'))
-                        <span class="text-danger">{{ $errors->first('sks') }}</span>
-                        @endif
+                    @error('sks')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" value="{{ $d->kuota }}"
+                        <input type="number" class="form-control form-control-lg" value="{{ $d->kuota }}"
                             aria-label="Kuota" name="kuota">
-                        @if ($errors->has('kuota'))
-                        <span class="text-danger">{{ $errors->first('kuota') }}</span>
-                        @endif
+                    @error('kuota')
+                        <div class="alert alert-danger" id="notif" swalType="error" swalTitle="{{$message}}" style="display: none">{{session('notif')}}</div>
+                        <script> window.addEventListener("load",clickNotif);</script>
+                    @enderror
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Submit</button>

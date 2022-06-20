@@ -10,19 +10,29 @@
     ?>
     @endif
 @endforeach
-@if (!$submitted)
+@if ((!$submitted) || ($status == 'REJECTED'))
+@if ($status == 'REJECTED')
+<div class="alert alert-danger" id="notif" swalType="error" swalTitle="KRS REJECTED! Try Again." style="display: none">{{session('notif')}}</div>
+<script> window.addEventListener("load",clickNotif);</script>
+@endif
 <form action="{{url('submitkrs')}}" method="POST">
     @csrf
     <div class="container-fluid py-4">
         <div class="row mt-4" >
             <div class="col-lg-7 mb-lg-0 mb-4">
               <div class="card ">
-                <select name="" id="selectJurusan" class="form-control text-center border-2 border-primary">
+                <div class="d-flex justify-content-center">
+                  <span class="mt-2 w-2 no-border"><i class="fas fa-chevron-circle-down"></i></span>
+                  <select name="" id="selectJurusan" class="form-control text-center w-60">
                     <option value="" disabled selected> -- Pilih Jurusan yang Diinginkan --  </option>
                     @foreach ($jurusan as $item)
-                        <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
+                      @if ($item->id_lj != auth()->user()->jurusan)
+                      <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
+                      @endif
                     @endforeach
-                </select>
+                  </select>
+                  <span class="mt-2 w-2 no-border"><i class="fas fa-chevron-circle-down"></i></span>
+                </div>    
                 <div class="card-header pb-0 p-3">
                   <h6 class="mb-2">List Mata Kuliah</h6>
                   <div class="d-flex justify-content-between">
@@ -52,55 +62,58 @@
                             </td>
                         </tr>
                         @else
-                        @foreach($data as $d)
-                        @if ($d->cluster == 4)
+                        
+                        @foreach ($dataset as $item)
+                        @if ($item->cluster == 4)
                           <?php $cluster="btn-success"?>
-                        @elseif ($d->cluster == 3)
+                        @elseif ($item->cluster == 3)
                           <?php $cluster="btn-info"?>
-                        @elseif ($d->cluster == 2)
+                        @elseif ($item->cluster == 2)
                           <?php $cluster="btn-warning"?>
                         @else
                           <?php $cluster="btn-danger"?>
                         @endif
-                        <tr for="" class="jurusan{{$d->jurusan_id}} allMK {{$cluster}}" style="display: none">
-                            <td class="w-30">
-                                <div class="d-flex px-2 py-1 align-items-center">
-                                <div>
-                                    <input type="checkbox" class="checkmk" name="mk[]" value="{{$d->id_mk}}" 
-                                    matkul="{{$d->matkul}}" jurusan="{{$d->nama_jurusan}}"
-                                    prodi="{{$d->prodi}}" sks="{{$d->sks}}">
-                                </div>
-                                  <div class="ms-4">
-                                    <p class="text-xs font-weight-bold mb-0">Prodi:</p>
-                                    <h6 class="text-sm mb-0">{{$d->prodi}}</h6>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="w-30">
-                                <div class="d-flex px-2 py-1 align-items-center">
-                                  <div class="ms-4">
-                                    <p class="text-xs font-weight-bold mb-0">Matkul:</p>
-                                    <h6 class="text-sm mb-0">{{$d->matkul}}</h6>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="w-30">
-                                <div class="d-flex px-2 py-1 align-items-center">
-                                  <div class="ms-4">
-                                    <p class="text-xs font-weight-bold mb-0">SKS:</p>
-                                    <h6 class="text-sm mb-0">{{$d->sks}}</h6>
-                                  </div>
-                                </div>
-                            </td>
-                            <td class="w-30">
-                                <div class="d-flex px-2 py-1 align-items-center">
-                                  <div class="ms-4">
-                                    <p class="text-xs font-weight-bold mb-0">Kuota:</p>
-                                    <h6 class="text-sm mb-0">{{$d->kuota}}</h6>
-                                  </div>
-                                </div>
-                            </td>
-                        </tr>
+                            @if ($item->jurusanAsal == auth()->user()->jurusan)
+                                <tr for="" class="jurusan{{$item->jurusanTujuan}} allMK {{$cluster}}" >
+                                  <td class="w-30">
+                                      <div class="d-flex px-2 py-1 align-items-center">
+                                      <div>
+                                          <input type="checkbox" class="checkmk" name="mk[]" value="{{$item->id_mk}}" 
+                                          matkul="{{$item->matkul}}" jurusan="{{$item->nama_jurusan}}"
+                                          prodi="{{$item->prodi}}" sks="{{$item->sks}}">
+                                      </div>
+                                        <div class="ms-4">
+                                          <p class="text-xs font-weight-bold mb-0">Prodi:</p>
+                                          <h6 class="text-sm mb-0">{{$item->prodi}}</h6>
+                                        </div>
+                                      </div>
+                                  </td>
+                                  <td class="w-30">
+                                      <div class="d-flex px-2 py-1 align-items-center">
+                                        <div class="ms-4">
+                                          <p class="text-xs font-weight-bold mb-0">Matkul:</p>
+                                          <h6 class="text-sm mb-0">{{$item->matkul}}</h6>
+                                        </div>
+                                      </div>
+                                  </td>
+                                  <td class="w-30">
+                                      <div class="d-flex px-2 py-1 align-items-center">
+                                        <div class="ms-4">
+                                          <p class="text-xs font-weight-bold mb-0">SKS:</p>
+                                          <h6 class="text-sm mb-0">{{$item->sks}}</h6>
+                                        </div>
+                                      </div>
+                                  </td>
+                                  <td class="w-30">
+                                      <div class="d-flex px-2 py-1 align-items-center">
+                                        <div class="ms-4">
+                                          <p class="text-xs font-weight-bold mb-0">Kuota:</p>
+                                          <h6 class="text-sm mb-0">{{$item->kuota}}</h6>
+                                        </div>
+                                      </div>
+                                  </td>
+                                </tr>
+                            @endif
                         @endforeach
                         @endif
                     </tbody>
@@ -149,7 +162,12 @@
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-3">
-                <table id="resultKRS" userkrs="{{Auth::user()->username}}" class="table align-items-center mb-0">
+                @foreach ($jurusan as $item)
+                      @if ($item->id_lj != auth()->user()->jurusan)
+                        <?php $jurus = $item->nama_jurusan?>
+                      @endif
+                @endforeach
+                <table id="resultKRS" userkrs="{{Auth::user()->nama}}" jurusankrs="{{$jurus}}" nimkrs="{{Auth::user()->nim}}" class="table align-items-center mb-0">
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mata Kuliah</th>
@@ -162,7 +180,7 @@
                       @foreach ($krs as $show)
                           @if ($show->id_user == Auth::user()->id)
                               @foreach (unserialize($show->matkul) as $mk)
-                                  @foreach ($data as $daa)
+                                  @foreach ($matkul as $daa)
                                       @if ($daa->id_mk == $mk)
                                           <tr>
                                               <td>
@@ -251,7 +269,7 @@
               "responsive": true, "lengthChange": false, "autoWidth": false, "searching":false, "info" : false,
               "buttons": [{
                     extend: "pdf",
-                    messageTop: "Nama : "+$('#resultKRS').attr('userkrs'),
+                    messageTop: "NIM : "+$('#resultKRS').attr('nimkrs')+"\n Nama : "+$('#resultKRS').attr('userkrs')+"\n Jurusan : "+$('#resultKRS').attr('jurusankrs'),
                 }]
             }).buttons().container().appendTo('#resultKRS_wrapper .col-md-6:eq(0)');
         });

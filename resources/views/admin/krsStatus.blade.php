@@ -17,7 +17,10 @@
                         <table class="table align-items-center mb-0">
                             <thead>
                                 <tr>
+                                    <th class="text-center text-secondary opacity-7">NIM</th>
                                     <th class="text-center text-secondary opacity-7">Nama</th>
+                                    <th class="text-center text-secondary opacity-7">Jurusan</th>
+                                    <th class="text-center text-secondary opacity-7">Username</th>
                                     <th class="text-secondary opacity-7 text-center">Mata Kuliah</th>
                                     <th class="text-secondary opacity-7 text-center">Status</th>
                                     <th class="text-secondary opacity-7 text-center">Action</th>
@@ -26,6 +29,34 @@
                             <tbody>
                                 @foreach ($krs as $item)
                                     <tr>
+                                        <td class="w-30">
+                                            <div class="d-flex px-2 py-1 align-items-center">
+                                              <div class="ms-4">
+                                                <p class="text-xs font-weight-bold mb-0">NIM:</p>
+                                                <h6 class="text-sm mb-0">{{$item->nim}}</h6>
+                                              </div>
+                                            </div>
+                                        </td>
+                                        <td class="w-30">
+                                            <div class="d-flex px-2 py-1 align-items-center">
+                                              <div class="ms-4">
+                                                <p class="text-xs font-weight-bold mb-0">Name:</p>
+                                                <h6 class="text-sm mb-0">{{$item->nama}}</h6>
+                                              </div>
+                                            </div>
+                                        </td>
+                                        <td class="w-30">
+                                            <div class="d-flex px-2 py-1 align-items-center">
+                                              <div class="ms-4">
+                                                <p class="text-xs font-weight-bold mb-0">Jurusan:</p>
+                                                @foreach ($jurusan as $jurus)
+                                                    @if ($jurus->id_lj == $item->jurusan)
+                                                    <h6 class="text-sm mb-0">{{$jurus->nama_jurusan}}</h6>
+                                                    @endif
+                                                @endforeach
+                                              </div>
+                                            </div>
+                                        </td>
                                         <td class="w-30">
                                             <div class="d-flex px-2 py-1 align-items-center">
                                               <div class="ms-4">
@@ -64,7 +95,7 @@
                                                 APPROVED
                                             </button>
                                             @elseif ($item->status == 'WAITING')
-                                            <button type="button" krsURL="{{url('actionKRS/'.$item->id_krs.'/APPROVED')}}" class="btn btn-info btnAction">{{$item->id_krs}}Approve</button>
+                                            <button type="button" krsURL="{{url('actionKRS/'.$item->id_krs.'/APPROVED')}}" class="btn btn-info btnAction">Approve</button>
                                             <button type="button" krsURL="{{url('actionKRS/'.$item->id_krs.'/REJECTED')}}" class="btn btn-danger btnAction">Reject</button>
                                             @else
                                             <button disabled="disabled" class="btn btn-default">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use App\Models\JurusanModel;
 
 class LoginController extends Controller
 {
@@ -17,7 +18,10 @@ class LoginController extends Controller
 
     public function register()
     {
-        return view('register');
+        $data = [
+            'jurusan' => JurusanModel::get()        
+        ];
+        return view('register',$data);
     }
 
     public function proslog(Request $request)
@@ -49,8 +53,11 @@ class LoginController extends Controller
     public function prosreg(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'username' => 'required|unique:users,username',
             'password' => 'required',
+            'nim' => 'required|unique:users,nim|max:11',
+            'name' => 'required',
+            'jurusan' => 'required',
         ]);
 
         $username = $request->username;
@@ -63,6 +70,9 @@ class LoginController extends Controller
             $user->username = $username;
             $user->password = Hash::make($password);;
             $user->role = 3;
+            $user->nama = $request->name;
+            $user->nim = $request->nim;
+            $user->jurusan = $request->jurusan;
             $user->save();
             $toastr = array(
                 'message' => 'Succes to register !',
@@ -85,5 +95,41 @@ class LoginController extends Controller
     {
         Auth::logout(); // menghapus session yang aktif
         return redirect()->route('login');
+    }
+
+    public function profile(){
+        $data = [
+            'jurusan' => JurusanModel::get()        
+        ];
+        return view('editProfile',$data);
+    }
+
+    public function editProfile($id){
+        $cek = User::where('id', $id)->first();
+        Request()->validate([
+            'username'  => ($cek->username === Request()->username) ? 'required':'required|unique:users,username',
+            'name'      => 'required'
+        ]);
+        $data = [
+            'username'  => Request()->username,
+            'nama'  => Request()->name,
+        ];
+        User::where('id',$id)->update($data);
+
+        Request()->session()->flash('success','Profile Edited!!');
+        return redirect('profile'); 
+    }
+
+    public function changePass($id){
+        Request()->validate([
+            'password' => 'required|string|min:4|confirmed',
+        ]);
+        $data = [
+            'password' => bcrypt(Request()->password),
+        ];
+        User::where('id',$id)->update($data);
+        Request()->session()->flash('success','Password Changed!!');
+        return redirect('profile'); 
+
     }
 }

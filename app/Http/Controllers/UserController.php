@@ -17,9 +17,10 @@ class UserController extends Controller
         $krs = KrsModel::all();
         $data = MatkulModel::orderBy('cluster','DESC')->join('list_prodi', 'list_matkul.id_prodi', '=', 'list_prodi.id_prodi')->join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->join('dataset','dataset.id_mk','=','list_matkul.id_mk')->get();
         $prodi = ProdiModel::join('list_jurusan', 'list_prodi.jurusan_id', '=', 'list_jurusan.id_lj')->get();
-        $dataset = DatasetModel::orderBy('cluster','DESC')->get();
+        $dataset = DatasetModel::join('list_jurusan','dataset.jurusanTujuan','=','list_jurusan.id_lj')->join('list_matkul','dataset.id_mk','=','list_matkul.id_mk')->join('list_prodi','list_matkul.id_prodi','=','list_prodi.id_prodi')->orderBy('cluster','desc')->get();
         $jurusan = JurusanModel::get();
-        return view('krs', compact('data', 'prodi', 'dataset', 'krs', 'jurusan'));
+        $matkul = MatkulModel::join('list_prodi', 'list_matkul.id_prodi', '=', 'list_prodi.id_prodi')->get();
+        return view('krs', compact('data', 'prodi', 'dataset', 'krs', 'jurusan','matkul'));
     }
 
     public function submitKrs(Request $request){

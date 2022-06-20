@@ -87,6 +87,29 @@
 
                                         @csrf
                                         <div class="mb-3">
+                                            <input type="text" class="form-control form-control-lg" placeholder="NIM" aria-label="NIM" name="nim">
+                                            @if ($errors->has('nim'))
+                                            <span class="text-danger">{{ $errors->first('nim') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control form-control-lg" placeholder="Name" aria-label="Name" name="name">
+                                            @if ($errors->has('username'))
+                                            <span class="text-danger">{{ $errors->first('username') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="mb-3">
+                                            <select name="jurusan" class="form-control form-control-lg" id="">
+                                                <option selected disabled>-- PILIH JURUSAN -- </option>
+                                                @foreach ($jurusan as $item)
+                                                    <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('jurusan'))
+                                            <span class="text-danger">{{ $errors->first('jurusan') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="mb-3">
                                             <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" name="username">
                                             @if ($errors->has('username'))
                                             <span class="text-danger">{{ $errors->first('username') }}</span>

@@ -13,5 +13,5 @@ class DatasetModel extends Model
     
     protected $table = "dataset";
 
-    protected $fillable = ['id_mk','x1','x2','x3','total','cluster'];
+    protected $fillable = ['jurusanAsal','jurusanTujuan','id_mk','x1','x2','x3','total','cluster'];
 }

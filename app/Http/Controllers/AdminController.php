@@ -16,7 +16,10 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $data = [
+            'jurusan' => JurusanModel::get(),
+        ];
+        return view('admin.dashboard',$data);
     }
 
     public function list_jurusan()
@@ -27,7 +30,10 @@ class AdminController extends Controller
 
     public function add_jurusan(Request $request)
     {
-        $request->validate(['jurusan' => 'required']);
+        $request->validate([
+            'jurusan' => 'required',
+            
+        ]);
       
         JurusanModel::create([
             'nama_jurusan' => $request->jurusan,
@@ -121,8 +127,10 @@ class AdminController extends Controller
             'matkul' => 'required',
             'sks' => 'required',
             'kuota' => 'required',
+            'id_mk' => 'required|unique:list_matkul,id_mk',
         ]);
         MatkulModel::create([
+            'id_mk' => $request->id_mk,
             'id_prodi' => $request->prodi_id,
             'matkul' => $request->matkul,
             'sks' => $request->sks,
@@ -134,11 +142,13 @@ class AdminController extends Controller
 
     public function edit_matkul(Request $request, $id)
     {
+        $cek = MatkulModel::where('id_mk', $id)->first();
         $request->validate([
             'prodi_id' => 'required',
             'matkul' => 'required',
             'sks' => 'required',
             'kuota' => 'required',
+            'id_mk' => ($cek->id_mk === Request()->id_mk) ? 'required':'required|unique:list_matkul,id_mk',
         ]);
         MatkulModel::find($id)->update([
             'id_prodi' => $request->prodi_id,
@@ -158,14 +168,17 @@ class AdminController extends Controller
     }
 
     public function importDataset(Request $request){
-        if(DatasetModel::exists()){
-            DatasetModel::truncate();
-            Excel::import(new DatasetImport,Request()->file);
-        } else {
-            Excel::import(new DatasetImport,Request()->file);
-        }
+        Request()->validate([
+            'asal' => 'required',
+            'tujuan'=> 'required|different:asal',
+            'file'  => 'required'
+        ]);
+        Excel::import(
+            new DatasetImport(Request()->asal,Request()->tujuan),
+            Request()->file
+        );
         $toastr = array(
-            'message' => 'Upload Success!',
+            'message' => 'Dataset Uploaded!',
             'alert' => 'success'
         );
         return redirect()->back()->with($toastr);
@@ -175,6 +188,7 @@ class AdminController extends Controller
         $data = [
             'krs' => KrsModel::join('users','users.id','=','krs.id_user')->get(),
             'matkul' => MatkulModel::get(),
+            'jurusan' => JurusanModel::get()
         ];
         return view('admin/krsStatus',$data);
     }
