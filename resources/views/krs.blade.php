@@ -1,7 +1,7 @@
 @extends('themes.template')
 
 @section('konten')
-<?php $submitted = false?>
+<?php $submitted = false; $status = "";?>
 @foreach ($krs as $it)
     @if ($it->id_user == Auth::user()->id)
     <?php 
@@ -11,10 +11,10 @@
     @endif
 @endforeach
 @if ((!$submitted) || ($status == 'REJECTED'))
-@if ($status == 'REJECTED')
-<div class="alert alert-danger" id="notif" swalType="error" swalTitle="KRS REJECTED! Try Again." style="display: none">{{session('notif')}}</div>
-<script> window.addEventListener("load",clickNotif);</script>
-@endif
+  @if ($status == 'REJECTED')
+  <div class="alert alert-danger" id="notif" swalType="error" swalTitle="KRS REJECTED! Try Again." style="display: none">{{session('notif')}}</div>
+  <script> window.addEventListener("load",clickNotif);</script>
+  @endif
 <form action="{{url('submitkrs')}}" method="POST">
     @csrf
     <div class="container-fluid py-4">
