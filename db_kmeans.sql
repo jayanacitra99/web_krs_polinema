@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2022 at 02:13 AM
+-- Generation Time: Jul 06, 2022 at 10:42 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -35,7 +35,12 @@ CREATE TABLE `dataset` (
   `x1` int(11) NOT NULL,
   `x2` int(11) NOT NULL,
   `x3` int(11) NOT NULL,
-  `total` int(11) NOT NULL,
+  `tempx1` decimal(11,6) NOT NULL,
+  `tempx2` decimal(11,6) NOT NULL,
+  `tempx3` decimal(11,6) NOT NULL,
+  `pusatC1` text NOT NULL,
+  `pusatC2` text NOT NULL,
+  `pusatC3` text NOT NULL,
   `cluster` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
@@ -45,22 +50,10 @@ CREATE TABLE `dataset` (
 -- Dumping data for table `dataset`
 --
 
-INSERT INTO `dataset` (`id`, `jurusanAsal`, `jurusanTujuan`, `id_mk`, `x1`, `x2`, `x3`, `total`, `cluster`, `updated_at`, `created_at`) VALUES
-(1, 2, 1, '1', 4, 4, 3, 11, 4, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(2, 2, 1, '2', 1, 2, 2, 5, 2, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(3, 2, 1, '3', 1, 3, 2, 6, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(4, 2, 1, '4', 2, 2, 3, 7, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(5, 2, 1, '9', 2, 3, 1, 6, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(6, 2, 1, '10', 2, 3, 3, 8, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(7, 2, 1, '11', 3, 1, 4, 8, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(8, 2, 1, '12', 1, 3, 4, 8, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(9, 2, 1, '13', 1, 4, 4, 9, 4, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(10, 2, 1, '14', 1, 2, 3, 6, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(11, 2, 1, '15', 3, 4, 4, 11, 4, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(12, 2, 1, '16', 1, 1, 4, 6, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(13, 2, 1, '17', 1, 2, 2, 5, 2, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(14, 2, 1, '18', 2, 3, 3, 8, 3, '2022-06-19 16:53:31', '2022-06-19 16:53:31'),
-(15, 2, 3, '7', 2, 2, 1, 5, 2, '2022-06-19 16:55:40', '2022-06-19 16:55:40');
+INSERT INTO `dataset` (`id`, `jurusanAsal`, `jurusanTujuan`, `id_mk`, `x1`, `x2`, `x3`, `tempx1`, `tempx2`, `tempx3`, `pusatC1`, `pusatC2`, `pusatC3`, `cluster`, `updated_at`, `created_at`) VALUES
+(1, 2, 2, '5', 1, 1, 2, '1.000000', '0.000000', '0.000000', '1 1 1', '1 1 2', '1 1 2', 2, '2022-07-06 13:40:37', '2022-07-06 13:39:08'),
+(2, 2, 2, '6', 2, 1, 1, '1.000000', '1.414214', '1.414214', '1 1 1', '1 1 2', '1 1 2', 1, '2022-07-06 13:40:37', '2022-07-06 13:39:08'),
+(3, 2, 2, '8', 1, 1, 2, '1.000000', '0.000000', '0.000000', '1 1 1', '1 1 2', '1 1 2', 2, '2022-07-06 13:40:37', '2022-07-06 13:39:08');
 
 -- --------------------------------------------------------
 
@@ -74,14 +67,6 @@ CREATE TABLE `krs` (
   `matkul` text NOT NULL,
   `status` enum('APPROVED','WAITING','REJECTED') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `krs`
---
-
-INSERT INTO `krs` (`id_krs`, `id_user`, `matkul`, `status`) VALUES
-(3, 2, 'a:1:{i:0;s:1:\"7\";}', 'REJECTED'),
-(4, 2, 'a:2:{i:0;s:2:\"15\";i:1;s:2:\"13\";}', 'APPROVED');
 
 -- --------------------------------------------------------
 
@@ -250,7 +235,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `dataset`
 --
 ALTER TABLE `dataset`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `krs`
