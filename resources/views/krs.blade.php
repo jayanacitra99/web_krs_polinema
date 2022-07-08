@@ -26,9 +26,7 @@
                   <select name="" id="selectJurusan" class="form-control text-center w-60">
                     <option value="" disabled selected> -- Pilih Jurusan yang Diinginkan --  </option>
                     @foreach ($jurusan as $item)
-                      @if ($item->id_lj != auth()->user()->jurusan)
                       <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
-                      @endif
                     @endforeach
                   </select>
                   <span class="mt-2 w-2 no-border"><i class="fas fa-chevron-circle-down"></i></span>
@@ -37,10 +35,9 @@
                   <h6 class="mb-2">List Mata Kuliah</h6>
                   <div class="d-flex justify-content-between">
                     <p class="font-weight-light">Sangat Direkomendasikan</p>
-                    <div class="btn btn-sm btn-success">4</div>
-                    <div class="btn btn-sm btn-info">3</div>
-                    <div class="btn btn-sm btn-warning">2</div>
-                    <div class="btn btn-sm btn-danger">1</div>
+                    <div class="btn btn-sm btn-success">3</div>
+                    <div class="btn btn-sm btn-info">2</div>
+                    <div class="btn btn-sm btn-warning">1</div>
                     <p class="font-weight-light">Kurang Direkomendasikan</p>
                   </div>
                 </div>
@@ -64,14 +61,12 @@
                         @else
                         
                         @foreach ($dataset as $item)
-                        @if ($item->cluster == 4)
+                        @if ($item->cluster == 3)
                           <?php $cluster="btn-success"?>
-                        @elseif ($item->cluster == 3)
-                          <?php $cluster="btn-info"?>
                         @elseif ($item->cluster == 2)
-                          <?php $cluster="btn-warning"?>
+                          <?php $cluster="btn-info"?>
                         @else
-                          <?php $cluster="btn-danger"?>
+                          <?php $cluster="btn-warning"?>
                         @endif
                             @if ($item->jurusanAsal == auth()->user()->jurusan)
                                 <tr for="" class="jurusan{{$item->jurusanTujuan}} allMK {{$cluster}}" >

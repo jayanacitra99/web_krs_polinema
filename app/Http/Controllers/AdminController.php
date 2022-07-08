@@ -170,7 +170,7 @@ class AdminController extends Controller
     public function importDataset(Request $request){
         Request()->validate([
             'asal' => 'required',
-            'tujuan'=> 'required|different:asal',
+            'tujuan'=> 'required',
             'file'  => 'required'
         ]);
         Excel::import(
