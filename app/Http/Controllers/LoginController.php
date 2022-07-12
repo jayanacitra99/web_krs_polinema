@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\JurusanModel;
+use App\Models\ProdiModel;
 
 class LoginController extends Controller
 {
@@ -19,9 +20,14 @@ class LoginController extends Controller
     public function register()
     {
         $data = [
-            'jurusan' => JurusanModel::get()        
+            'jurusan' => JurusanModel::get(),
         ];
         return view('register',$data);
+    }
+
+    public function getProdi($jid){
+        $prodi = ProdiModel::where('jurusan_id',$jid)->get();
+        return response()->json($prodi);
     }
 
     public function proslog(Request $request)
@@ -58,6 +64,7 @@ class LoginController extends Controller
             'nim' => 'required|unique:users,nim|max:11',
             'name' => 'required',
             'jurusan' => 'required',
+            'prodi' => 'required',
         ]);
 
         $username = $request->username;
@@ -73,6 +80,7 @@ class LoginController extends Controller
             $user->nama = $request->name;
             $user->nim = $request->nim;
             $user->jurusan = $request->jurusan;
+            $user->prodi = $request->prodi;
             $user->save();
             $toastr = array(
                 'message' => 'Succes to register !',

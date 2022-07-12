@@ -20,6 +20,7 @@ Route::get('/register', [LoginController::class, 'register'])->name('register');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/register', [LoginController::class, 'prosreg'])->name( 'register_p');
 Route::post('/login', [LoginController::class, 'proslog'])->name('login_p');
+Route::get('/getProdi/{jid}', [LoginController::class, 'getProdi'])->name('getProdi');
 
 Route::group(['middleware' => 'auth'], function () {
 

@@ -99,7 +99,7 @@
                                             @endif
                                         </div>
                                         <div class="mb-3">
-                                            <select name="jurusan" class="form-control form-control-lg" id="">
+                                            <select name="jurusan" class="form-control form-control-lg" id="listJurusan" onchange="getProdi(this)">
                                                 <option selected disabled>-- PILIH JURUSAN -- </option>
                                                 @foreach ($jurusan as $item)
                                                     <option value="{{$item->id_lj}}">{{$item->nama_jurusan}}</option>
@@ -107,6 +107,14 @@
                                             </select>
                                             @if ($errors->has('jurusan'))
                                             <span class="text-danger">{{ $errors->first('jurusan') }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="mb-3">
+                                            <select name="prodi" class="form-control form-control-lg" id="listProdi">
+                                                <option selected disabled>-- PILIH PRODI -- </option>
+                                            </select>
+                                            @if ($errors->has('prodi'))
+                                            <span class="text-danger">{{ $errors->first('prodi') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3">
@@ -176,6 +184,22 @@
                 break;
         }
         @endif
+    </script>
+    <script>
+        function getProdi(pro){
+            var xvalue = pro.value;
+            $.ajax({
+                type: "GET",
+                url: "getProdi/"+xvalue,       
+                success: function (data) {
+                    $('.optionProdi').remove();
+                    jQuery.each( data, function( i, val ) {
+                    $('#listProdi').append('<option class="optionProdi" value="'+val.id_prodi+'">'+val.prodi+'</option>');
+                    });
+                }
+            });
+            
+        }
     </script>
 </body>
 

@@ -68,7 +68,7 @@
                         @else
                           <?php $cluster="btn-warning"?>
                         @endif
-                            @if ($item->jurusanAsal == auth()->user()->jurusan)
+                            @if (($item->jurusanAsal == auth()->user()->jurusan) && ($item->id_prodi != auth()->user()->prodi))
                                 <tr for="" class="jurusan{{$item->jurusanTujuan}} allMK {{$cluster}}" >
                                   <td class="w-30">
                                       <div class="d-flex px-2 py-1 align-items-center">
