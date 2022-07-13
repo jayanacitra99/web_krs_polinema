@@ -127,7 +127,7 @@ class AdminController extends Controller
             'matkul' => 'required',
             'sks' => 'required',
             'kuota' => 'required',
-            'id_mk' => 'required|unique:list_matkul,id_mk',
+            'id_mk' => 'required|unique:list_matkul,id_mk|max:11',
         ]);
         MatkulModel::create([
             'id_mk' => $request->id_mk,
@@ -148,13 +148,14 @@ class AdminController extends Controller
             'matkul' => 'required',
             'sks' => 'required',
             'kuota' => 'required',
-            'id_mk' => ($cek->id_mk === Request()->id_mk) ? 'required':'required|unique:list_matkul,id_mk',
+            'id_mk' => ($cek->id_mk === $request->id_mk) ? 'required':'required|unique:list_matkul,id_mk|max:11',
         ]);
-        MatkulModel::find($id)->update([
+        MatkulModel::where('id_mk',$id)->update([
             'id_prodi' => $request->prodi_id,
             'matkul' => $request->matkul,
             'sks' => $request->sks,
             'kuota' => $request->kuota,
+            'id_mk' => $request->id_mk,
         ]);
         // Session::flash('success', 'Data matkul berhasil di perbarui');
         return redirect()->route('matkul')->with('success', 'Data Matakuliah Berhasil Di perbarui');
@@ -163,8 +164,12 @@ class AdminController extends Controller
     public function delet_matkul($id)
     {
         //fungsi eloquent untuk menghapus data
-        MatkulModel::find($id)->delete();
-        return redirect()->route('matkul')->with('success', 'Data Berhasil Dihapus');
+        MatkulModel::where('id_mk',$id)->delete();
+        $toastr = array(
+            'message' => 'Delete Success!',
+            'alert' => 'success'
+        );
+        return redirect('prodi')->with($toastr);
     }
 
     public function importDataset(Request $request){
