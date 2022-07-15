@@ -222,6 +222,8 @@
     <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.0') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ asset('js/toastr.js') }}"></script>
+    <!-- ChartJS -->
+    <script src="{{asset('')}}adminlte/plugins/chart.js/Chart.min.js"></script>
     <!-- SweetAlert2 -->
   <script src="{{asset('')}}adminlte/plugins/sweetalert2/sweetalert2.min.js"></script>
     <!-- DataTables  & Plugins -->

@@ -22,9 +22,13 @@ Route::post('/register', [LoginController::class, 'prosreg'])->name( 'register_p
 Route::post('/login', [LoginController::class, 'proslog'])->name('login_p');
 Route::get('/getProdi/{jid}', [LoginController::class, 'getProdi'])->name('getProdi');
 
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', [AdminController::class, 'index'])->name('home');
+
+    Route::get('getJurusan', [AdminController::class, 'getJurusan'])->name('getJurusan');
+    Route::get('countApp/{idJurusan}', [AdminController::class, 'countApp'])->name('countApp');    
 
     Route::get('jurusan', [AdminController::class, 'list_jurusan'])->name('jurusan');
     Route::post('jurusan_add', [AdminController::class, 'add_jurusan'])->name('jurusan_add');

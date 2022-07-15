@@ -18,8 +18,26 @@ class AdminController extends Controller
     {
         $data = [
             'jurusan' => JurusanModel::get(),
+            'krsapp'     => KrsModel::join('users','krs.id_user','=','users.id')->where('status','APPROVED')->get(),
+            'krsrej'     => KrsModel::join('users','krs.id_user','=','users.id')->where('status','REJECTED')->get(),
         ];
         return view('admin.dashboard',$data);
+    }
+
+    public function getJurusan(){
+        $jurusan = JurusanModel::get();
+        return response()->json($jurusan);
+    }
+
+    public function countApp($id){
+        $count = KrsModel::join('users','krs.id_user','=','users.id')->where('status','APPROVED')->get();
+        $total = 0;
+        foreach ($count as $key) {
+            if ($key->jurusan == $id) {
+                $total += 1;
+            }
+        }
+        return response()->json($total);
     }
 
     public function list_jurusan()

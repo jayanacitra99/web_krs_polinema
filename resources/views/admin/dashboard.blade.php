@@ -106,6 +106,51 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header pb-0 px-3">
+                        <h3 class="card-title">Approved KRS</h3>
+                    </div>
+                
+                    <div class="card-body">
+                        <?php $totalJurusan = 0?>
+                        @foreach ($jurusan as $item)
+                            <?php $jumlah = 0?>
+                            @foreach ($krsapp as $kapp)
+                                @if ($kapp->jurusan == $item->id_lj)
+                                    <?php $jumlah += 1?>
+                                @endif
+                            @endforeach
+                            <div id="approve{{$totalJurusan++}}" naJu="{{$item->nama_jurusan}}" appJu="{{$jumlah}}"></div>
+                        @endforeach
+                        <div id="dataAppr" totalJu="{{$totalJurusan}}"></div>
+                        <canvas id="approvedChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header pb-0 px-3">
+                        <h3 class="card-title" >Rejected KRS</h3>
+                    </div>
+                
+                    <div class="card-body">
+                        <?php $totalJurusan = 0?>
+                        @foreach ($jurusan as $item)
+                            <?php $jumlah = 0?>
+                            @foreach ($krsrej as $krej)
+                                @if ($krej->jurusan == $item->id_lj)
+                                    <?php $jumlah += 1?>
+                                @endif
+                            @endforeach
+                            <div id="reject{{$totalJurusan++}}" naJu="{{$item->nama_jurusan}}" appJu="{{$jumlah}}"></div>
+                        @endforeach
+                      <canvas id="rejectedChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+          </div>
     @else
         <div class="row">
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -218,90 +263,87 @@
 <!-- /.modal -->
 @endsection
 @section('js')
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
-    var ctx1 = document.getElementById("chart-line").getContext("2d");
-
-    var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
-
-    gradientStroke1.addColorStop(1, 'rgba(94, 114, 228, 0.2)');
-    gradientStroke1.addColorStop(0.2, 'rgba(94, 114, 228, 0.0)');
-    gradientStroke1.addColorStop(0, 'rgba(94, 114, 228, 0)');
-    new Chart(ctx1, {
-        type: "line",
-        data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-                label: "Mobile apps",
-                tension: 0.4,
-                borderWidth: 0,
-                pointRadius: 0,
-                borderColor: "#5e72e4",
-                backgroundColor: gradientStroke1,
-                borderWidth: 3,
-                fill: true,
-                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                maxBarThickness: 6
-
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
-            scales: {
-                y: {
-                    grid: {
-                        drawBorder: false,
-                        display: true,
-                        drawOnChartArea: true,
-                        drawTicks: false,
-                        borderDash: [5, 5]
-                    },
-                    ticks: {
-                        display: true,
-                        padding: 10,
-                        color: '#fbfbfb',
-                        font: {
-                            size: 11,
-                            family: "Open Sans",
-                            style: 'normal',
-                            lineHeight: 2
-                        },
-                    }
-                },
-                x: {
-                    grid: {
-                        drawBorder: false,
-                        display: false,
-                        drawOnChartArea: false,
-                        drawTicks: false,
-                        borderDash: [5, 5]
-                    },
-                    ticks: {
-                        display: true,
-                        color: '#ccc',
-                        padding: 20,
-                        font: {
-                            size: 11,
-                            family: "Open Sans",
-                            style: 'normal',
-                            lineHeight: 2
-                        },
-                    }
-                },
-            },
-        },
-    });
+    // $(document).ready(function() {
+    //     const jurusanArray = new Array();
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "getJurusan",       
+    //         success: function (data) {
+    //             jQuery.each( data, function( i, val ) {
+    //                 jurusanArray.push(val.nama_jurusan);
+    //             });
+    //             alert(jurusanArray);
+    //         }
+    //     });
+    // });
 </script>
+<script>
+    $(function () {
+        var totalJu = $('#dataAppr').attr('totalJu');
+        var jurusanArray = new Array();
+        var dataApp = new Array();
+        var colorData = new Array();
+        for (let index = 0; index < totalJu; index++) {
+            colorData.push("#"+Math.floor(Math.random()*16777215).toString(16));
+            jurusanArray.push($('#approve'+index).attr('naJu'));
+            dataApp.push(parseInt($('#approve'+index).attr('appJu')));
+        }
+        var dataRej = new Array();
+        for (let index = 0; index < totalJu; index++) {
+            dataRej.push(parseInt($('#reject'+index).attr('appJu')));
+        }
+
+        var appData        = {
+            labels: jurusanArray,
+            datasets: [
+                {
+                data: dataApp,
+                backgroundColor : colorData,
+                }
+            ]
+        }
+        var rejData        = {
+            labels: jurusanArray,
+            datasets: [
+                {
+                data: dataRej,
+                backgroundColor : colorData,
+                }
+            ]
+        }
+      //-------------
+      //- PIE CHART -
+      //-------------
+      // Get context with jQuery - using jQuery's .get() method.
+      var appPieChartCanvas = $('#approvedChart').get(0).getContext('2d')
+      var appPieData        = appData;
+      var appPieOptions     = {
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      new Chart(appPieChartCanvas, {
+        type: 'pie',
+        data: appPieData,
+        options: appPieOptions
+      })
+
+      var rejPieChartCanvas = $('#rejectedChart').get(0).getContext('2d')
+      var rejPieData        = rejData;
+      var rejPieOptions     = {
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      new Chart(rejPieChartCanvas, {
+        type: 'pie',
+        data: rejPieData,
+        options: rejPieOptions
+      })
+  
+    })
+  </script>
 @endsection
