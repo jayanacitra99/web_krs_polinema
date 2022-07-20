@@ -216,6 +216,14 @@ class AdminController extends Controller
         return view('admin/krsStatus',$data);
     }
     public function actionKRS($id,$status){
+        $krsData = KrsModel::where('id_krs',$id)->first();
+        foreach (unserialize($krsData->matkul) as $mk) {
+            $mkCheck = MatkulModel::where('id_mk',$mk)->first();
+            $data = [
+                'kuota' => $mkCheck->kuota - 1,
+            ];
+            MatkulModel::where('id_mk',$mk)->update($data);
+        }
         $data = [
             'status' => $status,
         ];

@@ -75,7 +75,7 @@
                                       <div>
                                           <input type="checkbox" class="checkmk" name="mk[]" value="{{$item->id_mk}}" 
                                           matkul="{{$item->matkul}}" jurusan="{{$item->nama_jurusan}}"
-                                          prodi="{{$item->prodi}}" sks="{{$item->sks}}">
+                                          prodi="{{$item->prodi}}" sks="{{$item->sks}}" {{$item->kuota === 0 ? 'disabled':''}}>
                                       </div>
                                         <div class="ms-4">
                                           <p class="text-xs font-weight-bold mb-0">Prodi:</p>
@@ -103,7 +103,7 @@
                                       <div class="d-flex px-2 py-1 align-items-center">
                                         <div class="ms-4">
                                           <p class="text-xs font-weight-bold mb-0">Kuota:</p>
-                                          <h6 class="text-sm mb-0">{{$item->kuota}}</h6>
+                                          <h6 class="text-sm mb-0">{{$item->kuota === 0 ? 'FULL':$item->kuota}}</h6>
                                         </div>
                                       </div>
                                   </td>
