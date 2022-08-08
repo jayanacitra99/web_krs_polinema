@@ -14,14 +14,13 @@
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-3">
-                        <table class="table align-items-center mb-0">
+                        <table id="tablekrs" class="table align-items-center mb-0">
                             <thead>
                                 <tr>
-                                    <th class="text-center text-secondary opacity-7">NIM</th>
-                                    <th class="text-center text-secondary opacity-7">Nama</th>
+                                    <th class="text-center text-secondary opacity-7">NIM / Nama</th>
                                     <th class="text-center text-secondary opacity-7">Jurusan</th>
                                     <th class="text-center text-secondary opacity-7">Username</th>
-                                    <th class="text-secondary opacity-7 text-center">Mata Kuliah</th>
+                                    <th class="text-secondary opacity-7 text-center col-4">Mata Kuliah</th>
                                     <th class="text-secondary opacity-7 text-center">Status</th>
                                     <th class="text-secondary opacity-7 text-center">Action</th>
                                 </tr>
@@ -33,13 +32,7 @@
                                             <div class="d-flex px-2 py-1 align-items-center">
                                               <div class="ms-4">
                                                 <p class="text-xs font-weight-bold mb-0">NIM:</p>
-                                                <h6 class="text-sm mb-0">{{$item->nim}}</h6>
-                                              </div>
-                                            </div>
-                                        </td>
-                                        <td class="w-30">
-                                            <div class="d-flex px-2 py-1 align-items-center">
-                                              <div class="ms-4">
+                                                <h6 class="text-sm mb-0">{{$item->nim}} </h6>
                                                 <p class="text-xs font-weight-bold mb-0">Name:</p>
                                                 <h6 class="text-sm mb-0">{{$item->nama}}</h6>
                                               </div>
@@ -135,5 +128,11 @@
         })
       });
     });
+    $(function () {
+    $("#tablekrs").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#tablekrs_wrapper .col-md-6:eq(0)');
+  });
 </script>
 @endsection
