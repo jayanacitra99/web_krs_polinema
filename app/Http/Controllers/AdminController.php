@@ -20,6 +20,7 @@ class AdminController extends Controller
             'jurusan' => JurusanModel::get(),
             'krsapp'     => KrsModel::join('users','krs.id_user','=','users.id')->where('status','APPROVED')->get(),
             'krsrej'     => KrsModel::join('users','krs.id_user','=','users.id')->where('status','REJECTED')->get(),
+            'matkul'    => MatkulModel::get()
         ];
         return view('admin.dashboard',$data);
     }

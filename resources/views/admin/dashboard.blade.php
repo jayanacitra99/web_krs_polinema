@@ -122,7 +122,7 @@
                                     <?php $jumlah += 1?>
                                 @endif
                             @endforeach
-                            <div id="approve{{$totalJurusan++}}" naJu="{{$item->nama_jurusan}}" appJu="{{$jumlah}}"></div>
+                            <div id="approve{{$totalJurusan++}}" naJu="{{$item->nama_jurusan}}" quota="{{$item->kuota}}" appJu="{{$jumlah}}"></div>
                         @endforeach
                         <div id="dataAppr" totalJu="{{$totalJurusan}}"></div>
                         <canvas id="approvedChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -150,7 +150,24 @@
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header pb-0 px-3">
+                        <h3 class="card-title">Quota</h3>
+                    </div>
+                    <div class="card-body">
+                        <?php $totalMatkul = 0?>
+                        @foreach ($matkul as $item)
+                            <div id="quota{{$totalMatkul++}}" naMk="{{$item->matkul}}" quota="{{$item->kuota}}"></div>
+                        @endforeach
+                        <div id="dataQuota" totalMk="{{$totalMatkul}}"></div>
+                        <canvas id="quotaChart" style="min-height: 250px; height: 250px; max-height: 500px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     @else
         <div class="row">
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -293,6 +310,15 @@
         for (let index = 0; index < totalJu; index++) {
             dataRej.push(parseInt($('#reject'+index).attr('appJu')));
         }
+        var totalMk = $('#dataQuota').attr('totalMk');
+        var quota = new Array();
+        var mk = new Array();
+        var colorQ = new Array();
+        for (let index = 0; index < totalMk; index++) {
+            mk.push($('#quota'+index).attr('naMk'));
+            quota.push(parseInt($('#quota'+index).attr('quota')));
+            colorQ.push("#"+Math.floor(Math.random()*16777215).toString(16));
+        }
 
         var appData        = {
             labels: jurusanArray,
@@ -309,6 +335,15 @@
                 {
                 data: dataRej,
                 backgroundColor : colorData,
+                }
+            ]
+        }
+        var quotaData        = {
+            labels: mk,
+            datasets: [
+                {
+                data: quota,
+                backgroundColor : colorQ,
                 }
             ]
         }
@@ -342,6 +377,25 @@
         type: 'pie',
         data: rejPieData,
         options: rejPieOptions
+      })
+
+      var qPieChartCanvas = $('#quotaChart').get(0).getContext('2d')
+      var qPieData        = quotaData;
+      var qPieOptions     = {
+        maintainAspectRatio : false,
+        responsive : false,
+      }
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      new Chart(qPieChartCanvas, {
+        type: 'pie',
+        data: qPieData,
+        options: {
+            qPieOptions,
+            legend: {
+                position : 'right',
+            }
+        }
       })
   
     })
